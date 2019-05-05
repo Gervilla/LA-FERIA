@@ -1,0 +1,4 @@
+mainboard.*
+!mainboard.c
+!mainboard.h
+.vscode

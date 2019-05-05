@@ -1,8 +1,9 @@
 [PROJECT]
-Target=D:\jcc\Facultad\SMP\SMP-Robotics\mainboard.hex
+Target=mainboard.hex
 Processor_Text=PIC18F4550
 CCSVerions=5.008
 Compiler=PCH
+CCSVersion=5.008
 [Target Data]
 FileList=mainboard.c
 [Directories]
@@ -11,6 +12,16 @@ Include=
 Type=4
 [mru-list]
 1=mainboard.c
+[Opened Files]\;D:\jcc\Facultad\Programas\ProgramFiles\PICC\Devices\;D:\jcc\Facultad\Programas\ProgramFiles\PICC\Drivers\;D:\jcc\Facultad\SMP\SMP-Robotics\
+[D:\jcc\Facultad\SMP\SMP-Robotics\mainboard]
+Type=4
+[mru-list]
+1=mainboard.c
 [Units]
 Count=1
 1=mainboard (main)
+[Opened Files]
+1=mainboard.c
+2=
+[mainboard.c]
+Type=4
