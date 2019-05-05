@@ -1,0 +1,16 @@
+[PROJECT]
+Target=D:\jcc\Facultad\SMP\SMP-Robotics\mainboard.hex
+Processor_Text=PIC18F4550
+CCSVerions=5.008
+Compiler=PCH
+[Target Data]
+FileList=mainboard.c
+[Directories]
+Include=
+[D:\jcc\Facultad\SMP\SMP-Robotics\mainboard]
+Type=4
+[mru-list]
+1=mainboard.c
+[Units]
+Count=1
+1=mainboard (main)
