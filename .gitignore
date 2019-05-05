@@ -2,3 +2,4 @@ mainboard.*
 !mainboard.c
 !mainboard.h
 .vscode
+__history
