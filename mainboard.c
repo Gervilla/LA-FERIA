@@ -1,4 +1,5 @@
 #include <mainboard.h>
+#use delay (clock=44MHz)
 
 /**
  * Primero, debemos de comprobar los dos sensores infrarrojos para encontrar la banda
@@ -27,107 +28,109 @@
  * FIXME:
 */
 
-void go_forward()
+//int aux = 0;
+//int pwm = 128;
+//unsigned int16 m = 0;
+//int pulsador = 0;
+
+enum Move
 {
-   M1_H();
-   M2_H();
-   M3_H();
-   M4_H();
+   FORWARD,
+   RIGHT_FORWARD,
+   LEFT_FORWARD,
+   BACK,
+   RIGHT_BACK,
+   LEFT_BACK,
+   STOP
 }
 
-void go_back()
+void move(Move m)
 {
-   M1_A();
-   M2_A();
-   M3_A();
-   M4_A();
-}
+   switch (m)
+   {
+      case FORWARD:
+         M1_H();
+         M2_H();
+         M3_H();
+         M4_H();
+         break;
 
-void turn_left()
-{
-   M1_H();
-   M2_A();
-   M3_H();
-   M4_A();
-}
+      case RIGHT_FORWARD:
+         // FIXME: Cambiarlo para que corresponda a giro hacia la derecha con el lado derecho como pivote
+         break;
 
-void turn_right()
-{
-   M1_A();
-   M2_H();
-   M3_A();
-   M4_H();
-}
+      case LEFT_FORWARD:
+         // FIXME: Cambiarlo para que corresponda a giro hacia la izquierda con el lado izquierdo como pivote
+         break;
+      
+      case BACK:
+         M1_A();
+         M2_A();
+         M3_A();
+         M4_A();
+         break;
+      
+      case RIGHT_BACK:
+         // FIXME: Cambiarlo para que corresponda a giro hacia la derecha con el lado derecho como pivote
+         break;
 
-void stop()
-{
-   M1_P();
-   M2_P();
-   M3_P();
-   M4_P();
+      case LEFT_BACK:
+         // FIXME: Cambiarlo para que corresponda a giro hacia la izquierda con el lado izquierdo como pivote
+         break;
+
+      case STOP:
+         M1_P();
+         M2_P();
+         M3_P();
+         M4_P();
+   }
 }
 
 void prepare_to_fight()
 {
-   go_back();
+   move(BACK);
 
    while(!IN3 && !IN4){}
 
    if (IN3)
-   {
-      turn_right();
-   }
+      move(LEFT_BACK);
    else
-   {
-      turn_left();
-   }
+      move(RIGHT_BACK);
    
    while(!IN3 || !IN4){}
    
-   go_forward();
-   //TODO: Añadir un delay de segundo y medio
-   stop();
-}
-
-void avoid_left()
-{
-
-}
-
-void avoid_right()
-{
-
-}
-
-void fight_on()
-{
-
+   move(FORWARD);
+   delay_ms(750);
+   move(STOP);
 }
 
 void main()
 {
-   //TODO: Añadir un delay de 3 segundos.
+   while(!IN1){}
+
+   //TODO: Inicializar timer 0 para que cuando sobrepase se active un flag que haga que el robot vaya poco a poco hacia delante.
    
-   int time;
+   delay_ms(3000);
 
    prepare_to_fight();
 
    while(TRUE)
    {
       while(!IN1 && !IN2 && time < 1000000000/*FIXME: Valor correspondiente a minuto y medio*/)
-         time += 10; // FIXME: Cambiar por un valor que corresponda al tiempo que ha pasado
-                  // desde la última vez que ha pasado el bucle.
+         time += 10; // FIXME: INCREMENTAR TIMER 0
       
+      delay_ms(500);
+
       if(IN1 || IN2)
       {
          //TODO: Arreglar la potencia para que sea la máxima.
-         //TODO: Delay de 500 ms.
+         delay_ms(500);
          prepare_to_fight();
       }
-      else
+      else if(time > 1000000000)
       {
          //TODO: Arreglar la potencia para que sea reducida.
-         go_forward();
+         move(FORWARD);
       }
    }
 }
