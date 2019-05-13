@@ -33,18 +33,17 @@
 //unsigned int16 m = 0;
 //int pulsador = 0;
 
-enum Move
-{
-   FORWARD,
-   RIGHT_FORWARD,
-   LEFT_FORWARD,
-   BACK,
-   RIGHT_BACK,
-   LEFT_BACK,
-   STOP
-}
+#define FORWARD 0
+#define RIGHT_FORWARD 1
+#define LEFT_FORWARD 2
+#define BACK 3
+#define RIGHT_BACK 4
+#define LEFT_BACK 5
+#define STOP 7
 
-void move(Move m)
+float time = 0;
+
+void move(int m)
 {
    switch (m)
    {
@@ -104,11 +103,25 @@ void prepare_to_fight()
    move(STOP);
 }
 
+#INT_TIMER0
+void int_tmr0()
+{
+   set_timer0(0);
+
+   time+=1.5f;
+}
+
 void main()
 {
    while(!IN1){}
 
    //TODO: Inicializar timer 0 para que cuando sobrepase se active un flag que haga que el robot vaya poco a poco hacia delante.
+   setup_timer_0(RTCC_INTERNAL | RTCC_DIV_256);
+
+   set_timer0(0);
+
+   enable_interrupts(INT_TIMER0);
+   enable_interrupts(GLOBAL);
    
    delay_ms(3000);
 
@@ -116,8 +129,7 @@ void main()
 
    while(TRUE)
    {
-      while(!IN1 && !IN2 && time < 1000000000/*FIXME: Valor correspondiente a minuto y medio*/)
-         time += 10; // FIXME: INCREMENTAR TIMER 0
+      while(!IN1 && !IN2 && time < 10){}
       
       delay_ms(500);
 
@@ -127,7 +139,7 @@ void main()
          delay_ms(500);
          prepare_to_fight();
       }
-      else if(time > 1000000000)
+      else if(time > 10)
       {
          //TODO: Arreglar la potencia para que sea reducida.
          move(FORWARD);
