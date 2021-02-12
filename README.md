@@ -1,6 +1,6 @@
 <H1>LA FERIA</H1>
 
-
+![img](https://github.com/Gervilla/LA-FERIA/blob/master/Imagen.JPG)
 
 Codigo C de nuestro robot de combate para la asignatura de sistemas con microprocesadores.
 
